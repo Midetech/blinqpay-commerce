@@ -5,6 +5,7 @@ import React from "react";
 import { Product } from "../interfaces/interface";
 import { useQuery } from "@tanstack/react-query";
 import { getMethod } from "services/request-methods";
+import SkeletonLoader from "components/SkeletonLoader";
 
 export default function Home() {
   const [products, setProducts] = React.useState<Product[]>([]);
@@ -60,11 +61,20 @@ export default function Home() {
             </button>
           ))}
         </div>
-        <div className="flex flex-wrap gap-4">
-          {products.map((item) => (
-            <Card key={item.id} {...item} />
-          ))}
-        </div>
+        {productQuery.isPending && (
+          <div className="flex flex-wrap gap-4">
+            {[...Array(10)].map((item) => (
+              <SkeletonLoader key={item} />
+            ))}
+          </div>
+        )}
+        {productQuery.isFetched && (
+          <div className="flex flex-wrap gap-4">
+            {products.map((item) => (
+              <Card key={item.id} {...item} />
+            ))}
+          </div>
+        )}
       </div>
     </main>
   );
