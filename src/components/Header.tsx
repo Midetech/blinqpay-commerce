@@ -35,17 +35,26 @@ const Header = ({ handleSearch, isSearchEnable = false }: HeaderProps) => {
           />
         </div>
       )}
-      <div onClick={() => router.push("/cart")} className="text-[#7765C4] pr-4">
-        <i
-          className="pi pi-shopping-cart text-2xl lg:text-3xl p-overlay-badge relative cursor-pointer
-"
+
+      <div className="flex items-center gap-x-10">
+        <div className="border w-7 h-7 text-[#7765C4] rounded-full flex items-center justify-center border-[#7765C4] cursor-pointer">
+          <i className="pi pi-user"></i>
+        </div>
+        <div
+          onClick={() => router.push("/cart")}
+          className="text-[#7765C4] pr-4"
         >
-          {quantities > 0 && (
-            <div className="w-4 h-4 text-[10px] font-sans font-medium flex items-center justify-center rounded-full text-white  bg-[#7765C4] absolute -top-1 -right-2">
-              {quantities}
-            </div>
-          )}
-        </i>
+          <i
+            className="pi pi-shopping-cart text-2xl lg:text-2xl p-overlay-badge relative cursor-pointer
+"
+          >
+            {quantities > 0 && (
+              <div className="w-3 h-3 text-[9px] font-sans font-bold flex items-center justify-center rounded-full text-white  bg-[#7765C4] absolute -top-1 -right-2">
+                {quantities}
+              </div>
+            )}
+          </i>
+        </div>
       </div>
     </div>
   );
