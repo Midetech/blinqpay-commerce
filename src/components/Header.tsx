@@ -1,7 +1,9 @@
+"use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useCart } from "../app/app-context";
+import Button from "./Button";
 
 interface HeaderProps {
   isSearchEnable?: boolean;
@@ -12,17 +14,16 @@ const Header = ({ handleSearch, isSearchEnable = false }: HeaderProps) => {
 
   const router = useRouter();
   return (
-    <div
-      onClick={() => router.push("/")}
-      className="lg:h-[80px] h-[50px] w-full border border-b flex items-center justify-between px-4"
-    >
-      <Image
-        src="/blinqshop.png"
-        width={80}
-        height={100}
-        alt="Bliq Shop"
-        priority
-      />
+    <div className="h-[80px] w-full border border-b flex items-center justify-between px-8 sticky top-0 bg-white overflow-hidden">
+      <div onClick={() => router.push("/")}>
+        <Image
+          src="/blinqshop.png"
+          width={80}
+          height={100}
+          alt="Bliq Shop"
+          priority
+        />
+      </div>
 
       {isSearchEnable && (
         <div className="h-[40px] w-2/5 rounded-[8px] border">
@@ -34,7 +35,7 @@ const Header = ({ handleSearch, isSearchEnable = false }: HeaderProps) => {
           />
         </div>
       )}
-      <div onClick={() => router.push("/cart")} className="text-[#7765C4]">
+      <div onClick={() => router.push("/cart")} className="text-[#7765C4] pr-4">
         <i
           className="pi pi-shopping-cart text-2xl lg:text-3xl p-overlay-badge relative cursor-pointer
 "

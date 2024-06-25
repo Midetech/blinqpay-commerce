@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
 import React from "react";
 import _ from "lodash";
@@ -5,11 +6,12 @@ import Button from "./Button";
 import { useCart } from "../app/app-context";
 
 interface CardProps {
+  id: number;
   title: string;
   description: string;
   price: number;
   image: string;
-  quantity: number;
+  quantity?: number;
 }
 const Card = (item: CardProps) => {
   const {
@@ -20,7 +22,7 @@ const Card = (item: CardProps) => {
     getTotalPrice,
     addToCart,
   } = useCart();
-
+  const existingItem = state.items.find((cart) => cart.id === item.id);
   return (
     <div className="xl:w-[24%] lg:w-[23%]  border p-4 rounded-[8px] space-y-2 shadow-sm">
       <div className="h-44">
@@ -41,23 +43,52 @@ const Card = (item: CardProps) => {
         })}
       </p>
       <div className="flex justify-between items-center">
-        <p className="text-sm font-bold">${item.price}</p>
+        <p className="text-sm font-bold text-center">${item.price}</p>
 
-        <Button
-          onClick={() =>
-            addToCart({
-              ...item,
-              quantity: 1,
-            })
-          }
-        >
-          {" "}
-          Add{" "}
-          <i
-            className="pi
+        <div className="flex justify-between items-center gap-x-6 mt-4">
+          {existingItem?.id === item.id && (
+            <div className="flex items-center gap-x-2">
+              <Button
+                onClick={() => decreaseQuantity(item.id)}
+                className="!bg-primary text-white !w-4 !h-4 !rounded-[3px] text-[10px]"
+              >
+                <i className=" pi pi-minus "></i>
+              </Button>
+              <p>{existingItem.quantity}</p>
+              <Button
+                onClick={() => increaseQuantity(item.id)}
+                className="!bg-primary text-white !w-4 !h-4  !rounded-[3px]  text-[10px]"
+              >
+                <i className=" pi pi-plus"></i>
+              </Button>
+            </div>
+          )}
+
+          {existingItem?.id === item.id ? (
+            <Button
+              onClick={() => removeFromCart(item.id)}
+              className="!w-8 !bg-transparent text-red-600"
+            >
+              <i className="pi pi-trash"></i>
+            </Button>
+          ) : (
+            <Button
+              className="hover:border-[#7765C4] hover:text-[#7765C4] border shadow-sm"
+              onClick={() =>
+                addToCart({
+                  ...item,
+                  quantity: 1,
+                })
+              }
+            >
+              Add
+              <i
+                className="pi
   pi-plus-circle"
-          ></i>
-        </Button>
+              ></i>
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -1,24 +1,17 @@
 "use client";
+import { useQuery } from "@tanstack/react-query";
 import Card from "components/Card";
 import Header from "components/Header";
-import React from "react";
-import { Product } from "../interfaces/interface";
-import { useQuery } from "@tanstack/react-query";
-import { getMethod } from "services/request-methods";
 import SkeletonLoader from "components/SkeletonLoader";
+import React from "react";
+import { getMethod } from "services/request-methods";
+import { Product } from "../interfaces/interface";
+import Button from "components/Button";
+import { useRouter } from "next/navigation";
 import { useCart } from "./app-context";
 
 export default function Home() {
-  const {
-    state,
-    increaseQuantity,
-    decreaseQuantity,
-    removeFromCart,
-    getTotalPrice,
-  } = useCart();
-
-  console.log(state);
-
+  const { state } = useCart();
   const [products, setProducts] = React.useState<Product[]>([]);
   const [categories, setCategories] = React.useState<string[]>([]);
   const [slug, setSlug] = React.useState<string>("");
@@ -66,7 +59,7 @@ export default function Home() {
   };
 
   return (
-    <main className="flex lg:min-h-screen flex-col">
+    <main className="flex lg:min-h-screen flex-col pb-12">
       <Header handleSearch={handleProductSearch} isSearchEnable />
 
       <div className="w-full lg:p-5 p-2 flex flex-col">
