@@ -2,6 +2,11 @@
   "name": "blinqpay-commerce",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "Sunday Olomitutu",
+    "email": "faginorish@gmail.com",
+    "url": "https://blinqpay-commerce.vercel.app/"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
