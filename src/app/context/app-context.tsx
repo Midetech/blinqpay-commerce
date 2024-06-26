@@ -159,7 +159,7 @@ const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const getTotalPrice = () => {
     return state.items.reduce(
-      (total, item) => total + item.price * item.quantity,
+      (total, item) => total + 100 + item.price * item.quantity,
       0
     );
   };
