@@ -14,7 +14,7 @@ import {
   removeFromCart,
   selectCartItems,
 } from "../app/redux/cart/cartSlice";
-
+import { useClickOutside } from "primereact/hooks";
 function Modal({
   product,
   setSelectedProduct,
@@ -26,7 +26,11 @@ function Modal({
   const existingItem = items.find((cart: any) => cart.id === product?.id);
   const dispatch = useDispatch();
   const [activeImage, setActiveImage] = React.useState("");
+  const overlayRef = React.useRef(null);
 
+  useClickOutside(overlayRef, () => {
+    setSelectedProduct({} as any);
+  });
   React.useEffect(() => {
     if (product?.id) {
       setActiveImage(product.images[0]);
@@ -37,7 +41,10 @@ function Modal({
     <>
       {product?.id && (
         <dialog className="fixed left-0 top-0 w-full h-full bg-black bg-opacity-50 z-50 overflow-auto backdrop-blur flex justify-center items-center">
-          <div className="bg-white w-[750px] m-auto p-4 rounded-[8px]">
+          <div
+            ref={overlayRef}
+            className="bg-white w-[750px] m-auto p-4 rounded-[8px]"
+          >
             <div>
               <div className="flex items-center justify-between border-b pb-2">
                 <p className="font-bold text-base">Product Details</p>

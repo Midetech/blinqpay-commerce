@@ -191,7 +191,7 @@ export default function Home() {
 
       {params.page < apiResponse?.total / params.limit && (
         <Button
-          className="bg-primary text-white mx-auto mt-8"
+          className="bg-primary text-white mx-auto mt-8 lg:mb-20 md:mb-20 mb-16"
           onClick={() =>
             setParams({
               ...params,

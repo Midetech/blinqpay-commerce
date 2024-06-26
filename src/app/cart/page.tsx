@@ -24,7 +24,7 @@ export default function Cart() {
   const config = {
     reference: new Date().getTime().toString(),
     email: "user@example.com",
-    amount: totalPrice * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+    amount: Number(totalPrice.toFixed(2)) * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
     publicKey: `${process.env.NEXT_PUBLIC_PAYSTACK_KEY}`,
   };
 
@@ -61,7 +61,7 @@ export default function Cart() {
         </div>
       )}
       {items.length > 0 && (
-        <div className="px-8 py-4 flex lg:gap-x-4 flex-col lg:flex-row gap-y-8">
+        <div className="px-8 py-4 flex lg:gap-x-4 flex-col lg:flex-row gap-y-8 mb-16">
           <div className="lg:w-[73%] flex flex-col gap-y-4 border rounded-[7px]">
             {items.map((product, index: Key | null | undefined) => (
               <CartCard {...product} key={index} />
@@ -77,7 +77,8 @@ export default function Cart() {
               <p>Subtotal</p>
               <div className="flex items-center justify-between">
                 {" "}
-                <p>{`Items (${totalItems})`}</p> <p>{`$${totalPrice}`}</p>
+                <p>{`Items (${totalItems})`}</p>{" "}
+                <p>{`$${totalPrice.toFixed(2)}`}</p>
               </div>
 
               <p>Delivery not include</p>

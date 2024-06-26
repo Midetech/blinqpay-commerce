@@ -48,7 +48,7 @@ const Header = ({ handleSearch, isSearchEnable = false }: HeaderProps) => {
 "
           >
             {totalItems > 0 && (
-              <div className="w-3 h-3 text-[9px] font-sans font-bold flex items-center justify-center rounded-full text-white  bg-[#7765C4] absolute -top-1 -right-2">
+              <div className="w-4 h-4 text-[9px] font-sans font-bold flex items-center justify-center rounded-full text-white  bg-[#7765C4] absolute -top-1 -right-2">
                 {totalItems}
               </div>
             )}
