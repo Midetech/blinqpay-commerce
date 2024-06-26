@@ -6,9 +6,10 @@ import { useRouter } from "next/navigation";
 import { usePaystackPayment } from "react-paystack";
 import { useCart } from "../context/app-context";
 import { Key } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import {
+  clearCart,
   quantities,
   selectCartItems,
   selectTotalPrice,
@@ -18,8 +19,8 @@ export default function Cart() {
   const items = useSelector((state: RootState) => selectCartItems(state));
   const totalPrice = useSelector((state: RootState) => selectTotalPrice(state));
   const totalItems = useSelector((state: RootState) => quantities(state));
-  console.log(totalItems);
   const router = useRouter();
+  const dispatch = useDispatch();
   const config = {
     reference: new Date().getTime().toString(),
     email: "user@example.com",
@@ -31,7 +32,7 @@ export default function Cart() {
   const onSuccess = (reference: any) => {
     // Implementation for whatever you want to do with reference and after success call.
     localStorage.clear();
-    // clearCart();
+    dispatch(clearCart());
     router.push("/");
     console.log(reference);
   };
