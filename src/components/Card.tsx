@@ -26,7 +26,7 @@ const Card = (item: Product) => {
         setProduct(item);
         router.push("?modal=true");
       }}
-      className="xl:w-[24%] lg:w-[23%] md:w-[32%] w-[90%] border p-4 rounded-[8px] space-y-2 shadow-sm"
+      className="xl:w-[24%] lg:w-[23%] md:w-[32%] w-[90%] border p-4 rounded-[8px] space-y-2 shadow-sm cursor-pointer"
     >
       <Toast ref={toast} />
       <div className="h-44">

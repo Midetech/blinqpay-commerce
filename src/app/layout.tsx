@@ -30,11 +30,11 @@ export default function RootLayout({
           {children}
           <footer className="h-12 w-full  px-8 flex items-center justify-between border-t">
             <Image
-              src={"/logo.png"}
+              src={"/blinqshop.png"}
               alt="Blinq Shop"
               width={100}
               height={100}
-              className="w-[30px] h-[20px]"
+              className="w-[80px] h-[40px]"
             />
 
             <p className="text-sm text-gray-700">

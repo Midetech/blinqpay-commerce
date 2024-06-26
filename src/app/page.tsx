@@ -24,7 +24,6 @@ export default function Home() {
     skip: 0,
     sort: null,
     page: 1,
-    p: null,
     sortBy: null,
     order: null,
   });
@@ -68,7 +67,7 @@ export default function Home() {
 
   React.useEffect(() => {
     if (apiResponse?.products?.length > 0) {
-      if (!params.order && params.sortBy !== "title") {
+      if (!params.order && params.sortBy !== "title" && !params.q) {
         setProducts((prevProducts) => [
           ...prevProducts,
           ...apiResponse.products,
@@ -77,17 +76,26 @@ export default function Home() {
         setProducts(apiResponse.products);
       }
     }
-  }, [apiResponse, params.order, params.sortBy]);
+  }, [apiResponse, params.order, params.sortBy, params.q]);
 
   return (
     <main className="flex lg:min-h-screen flex-col pb-12">
       <Header
-        handleSearch={(e) =>
-          setParams({
-            ...params,
-            p: e.target.value,
-          })
-        }
+        handleSearch={(e) => {
+          if (e.target.value) {
+            setSlug("/search");
+            setParams({
+              ...params,
+              q: e.target.value,
+              order: null,
+              limit: null,
+              page: null,
+              skip: null,
+            });
+          } else {
+            setSlug("");
+          }
+        }}
         isSearchEnable
       />
 
