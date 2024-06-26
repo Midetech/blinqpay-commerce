@@ -9,16 +9,13 @@ import React from "react";
 import { useCart } from "../app/context/app-context";
 
 function Modal(product: Product) {
-  const searchParams = useSearchParams();
-  const modal = searchParams.get("modal");
-  const pathname = usePathname();
-
   const {
     state,
     addToCart,
     removeFromCart,
     increaseQuantity,
     decreaseQuantity,
+    setProduct,
   } = useCart();
   const existingItem = state.items.find((cart: any) => cart.id === product?.id);
   const [activeImage, setActiveImage] = React.useState("");
@@ -31,19 +28,19 @@ function Modal(product: Product) {
 
   return (
     <>
-      {modal && product?.id && (
+      {product?.id && (
         <dialog className="fixed left-0 top-0 w-full h-full bg-black bg-opacity-50 z-50 overflow-auto backdrop-blur flex justify-center items-center">
           <div className="bg-white w-[750px] m-auto p-4 rounded-[8px]">
             <div>
               <div className="flex items-center justify-between border-b pb-2">
                 <p className="font-bold text-base">Product Details</p>
 
-                <Link href={pathname}>
+                <Button className="w-6" onClick={() => setProduct({} as any)}>
                   <i
                     className="pi 
 pi-times-circle"
                   ></i>{" "}
-                </Link>
+                </Button>
               </div>
               <div className="flex gap-x-5 mt-5">
                 <div>

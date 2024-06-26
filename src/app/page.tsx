@@ -22,10 +22,7 @@ export default function Home() {
   const [params, setParams] = React.useState<any>({
     limit: 20,
     skip: 0,
-    sort: null,
     page: 1,
-    sortBy: null,
-    order: null,
   });
   const [selectedFilter, setSelectedFilter] = React.useState(null);
 
@@ -67,16 +64,16 @@ export default function Home() {
 
   React.useEffect(() => {
     if (apiResponse?.products?.length > 0) {
-      if (!params.order && params.sortBy !== "title" && !params.q) {
+      if ((params.sortBy && params.sortBy !== undefined) || params.q) {
+        setProducts(apiResponse.products);
+      } else {
         setProducts((prevProducts) => [
           ...prevProducts,
           ...apiResponse.products,
         ]);
-      } else {
-        setProducts(apiResponse.products);
       }
     }
-  }, [apiResponse, params.order, params.sortBy, params.q]);
+  }, [apiResponse, params.sortBy, params.q]);
 
   return (
     <main className="flex lg:min-h-screen flex-col pb-12">
@@ -140,33 +137,8 @@ export default function Home() {
             ))}
           </div>
           <div className="card flex justify-end self-end ml-auto">
-            {/* <CascadeSelect
-              value={selectedFilter}
-              onGroupChange={
-                (e) => {}
-                // setParams({
-                //   ...params,
-                //   order: e.value?.code,
-                // })
-              }
-              onChange={(e) => {
-                setSelectedFilter(e.value);
-                setParams({
-                  ...params,
-                  sortBy: e.value?.code,
-                });
-              }}
-              options={filterItems}
-              optionLabel="cname"
-              optionGroupLabel="name"
-              optionGroupChildren={["sorts", "orders"]}
-              className="w-full md:w-14rem border"
-              breakpoint="767px"
-              placeholder="Select a City"
-              style={{ minWidth: "14rem" }}
-            /> */}
-
             <Dropdown
+              disabled
               value={selectedFilter}
               onChange={(e) => {
                 setSelectedFilter(e.value);
