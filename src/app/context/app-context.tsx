@@ -23,7 +23,8 @@ type CartAction =
   | { type: "INCREASE_QUANTITY"; payload: { id: number } }
   | { type: "DECREASE_QUANTITY"; payload: { id: number } }
   | { type: "REMOVE_FROM_CART"; payload: { id: number } }
-  | { type: "SET_CART"; payload: CartItem[] };
+  | { type: "SET_CART"; payload: CartItem[] }
+  | { type: "CLEAR_CART" };
 
 // Create initial state
 const initialState: CartState = {
@@ -41,6 +42,7 @@ const CartContext = createContext<{
   quantities: number;
   product: Product;
   setProduct: (product: Product) => void;
+  clearCart: () => void;
 }>({
   state: initialState,
   addToCart: () => {},
@@ -51,6 +53,7 @@ const CartContext = createContext<{
   quantities: 0,
   product: {} as any,
   setProduct: () => {},
+  clearCart: () => {},
 });
 
 // Reducer function to handle cart actions
@@ -105,6 +108,11 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
         ...state,
         items: action.payload,
       };
+    case "CLEAR_CART":
+      return {
+        ...state,
+        items: [],
+      };
 
     default:
       return state;
@@ -145,6 +153,10 @@ const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     dispatch({ type: "REMOVE_FROM_CART", payload: { id } });
   };
 
+  const clearCart = () => {
+    dispatch({ type: "CLEAR_CART" });
+  };
+
   const getTotalPrice = () => {
     return state.items.reduce(
       (total, item) => total + item.price * item.quantity,
@@ -166,6 +178,7 @@ const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         decreaseQuantity,
         removeFromCart,
         getTotalPrice,
+        clearCart,
       }}
     >
       {children}

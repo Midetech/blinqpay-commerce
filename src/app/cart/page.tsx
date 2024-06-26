@@ -7,7 +7,7 @@ import { usePaystackPayment } from "react-paystack";
 import { useCart } from "../context/app-context";
 import { Key } from "react";
 export default function Cart() {
-  const { state, quantities, getTotalPrice } = useCart();
+  const { state, quantities, getTotalPrice, clearCart } = useCart();
   const router = useRouter();
   const config = {
     reference: new Date().getTime().toString(),
@@ -20,6 +20,7 @@ export default function Cart() {
   const onSuccess = (reference: any) => {
     // Implementation for whatever you want to do with reference and after success call.
     localStorage.clear();
+    clearCart();
     router.push("/");
     console.log(reference);
   };

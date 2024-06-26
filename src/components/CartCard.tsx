@@ -38,7 +38,7 @@ const CartCard = (product: Cartproduct) => {
                 {product.sku}
               </p>
             </div>
-
+            <p>${product.price}</p>
             <div className="flex justify-between products-center">
               <Rating
                 className="text-primary"
@@ -51,17 +51,23 @@ const CartCard = (product: Cartproduct) => {
           </div>
 
           <div className="flex justify-between products-center mt-4">
-            <div className="flex products-center gap-x-2">
+            <div className="flex items-center gap-x-2">
               <Button
-                onClick={() => decreaseQuantity(product.id)}
+                onClick={(e: { stopPropagation: () => void }) => {
+                  e.stopPropagation();
+                  decreaseQuantity(product.id);
+                }}
                 className="!bg-primary text-white !w-4 !h-4 !rounded-[3px] text-[10px]"
               >
                 <i className=" pi pi-minus "></i>
               </Button>
               <p>{product?.quantity}</p>
               <Button
-                onClick={() => increaseQuantity(product.id)}
-                className="!bg-primary text-white !w-4 !h-4  !rounded-[3px]  text-[9px] p-2"
+                onClick={(e: { stopPropagation: () => void }) => {
+                  e.stopPropagation();
+                  increaseQuantity(product.id);
+                }}
+                className="!bg-primary text-white !w-4 !h-4  !rounded-[3px]  text-[10px]"
               >
                 <i className=" pi pi-plus"></i>
               </Button>
