@@ -33,7 +33,7 @@ const CartCard = (product: Cartproduct) => {
             <p className="lg:text-sm text-[12px] text-gray-600">
               {product.description}
             </p>
-            <div className="bg-yellow-300  h-8 w-fit rounded-[10px] flex products-center justify-center px-2">
+            <div className="bg-yellow-300  h-8 w-fit rounded-[10px] flex items-center justify-center px-2">
               <p className="text-yellow-600 text-sm font-bold font-sans ">
                 {product.sku}
               </p>
