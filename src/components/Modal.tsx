@@ -166,7 +166,7 @@ pi-times-circle"
                     src={image}
                     quality={100}
                     alt={product.title}
-                    className="object-contain h-[100px] w-[100px] shrink-0"
+                    className="object-contain h-[100px] w-[100px] shrink-0 cursor-pointer"
                   />
                 </div>
               ))}

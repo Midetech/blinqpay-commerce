@@ -26,22 +26,7 @@ export default function RootLayout({
       <link rel="icon" href="/favicon.ico" sizes="any" />
 
       <body className={` ${inter.className}`}>
-        <Providers>
-          {children}
-          <footer className="h-12 w-full  px-8 flex items-center justify-between border-t">
-            <Image
-              src={"/blinqshop.png"}
-              alt="Blinq Shop"
-              width={100}
-              height={100}
-              className="w-[80px] h-[40px]"
-            />
-
-            <p className="text-sm text-gray-700">
-              Copyright &copy; {new Date().getFullYear()}
-            </p>
-          </footer>
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

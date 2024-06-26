@@ -6,10 +6,12 @@ import Header from "components/Header";
 import Modal from "components/Modal";
 import SkeletonLoader from "components/SkeletonLoader";
 import { Dropdown } from "primereact/dropdown";
+import { Skeleton } from "primereact/skeleton";
 import React from "react";
 import { getMethod } from "services/request-methods";
 import { Categories, Product, ResponseProps } from "../interfaces/interface";
 import { useCart } from "./context/app-context";
+import Footer from "components/Footer";
 
 export default function Home() {
   const { product } = useCart();
@@ -77,7 +79,7 @@ export default function Home() {
   }, [apiResponse, params.sortBy, params.q]);
 
   return (
-    <main className="flex lg:min-h-screen flex-col pb-12">
+    <main className="flex lg:min-h-screen flex-col">
       <Header
         handleSearch={(e) => {
           if (e.target.value) {
@@ -99,32 +101,20 @@ export default function Home() {
 
       <div className="w-full lg:p-5 p-2 flex flex-col">
         <div className="flex  p-5 ">
-          <div className="w-full flex gap-x-5 overflow-auto mr-5">
-            <button
-              className="btn"
-              onClick={() => {
-                setProducts([]);
-                setSlug("");
-                setSelectedFilter(null);
-                setParams({
-                  ...params,
-                  page: 1,
-                  skip: 0,
-                  sortBy: null,
-                });
-              }}
-            >
-              All
-            </button>
-            {categories.map((item, index) => (
+          {categoriesQuery.isPending ? (
+            <div className="flex justify-center gap-x-4 items-center">
+              {[...Array(8)].map((item, index) => (
+                <Skeleton key={index} width="5rem" className="mb-2"></Skeleton>
+              ))}
+            </div>
+          ) : (
+            <div className="w-full flex gap-x-5 overflow-auto mr-5">
               <button
-                key={index}
-                className={`text-base text-nowrap hover:text-primary  ${
-                  slug.includes(item.slug) ? "text-primary" : "text-gray-700"
-                }`}
+                className="btn"
                 onClick={() => {
                   setProducts([]);
-                  setSlug(`/category/${item.slug}`);
+                  setSlug("");
+                  setSelectedFilter(null);
                   setParams({
                     ...params,
                     page: 1,
@@ -133,10 +123,30 @@ export default function Home() {
                   });
                 }}
               >
-                {item.name}
+                All
               </button>
-            ))}
-          </div>
+              {categories.map((item, index) => (
+                <button
+                  key={index}
+                  className={`text-base text-nowrap hover:text-primary  ${
+                    slug.includes(item.slug) ? "text-primary" : "text-gray-700"
+                  }`}
+                  onClick={() => {
+                    setProducts([]);
+                    setSlug(`/category/${item.slug}`);
+                    setParams({
+                      ...params,
+                      page: 1,
+                      skip: 0,
+                      sortBy: null,
+                    });
+                  }}
+                >
+                  {item.name}
+                </button>
+              ))}
+            </div>
+          )}
           <div className="card flex justify-end self-end ml-auto">
             <Dropdown
               disabled
@@ -197,6 +207,7 @@ export default function Home() {
         product={selectedProduct}
         setSelectedProduct={setSelectedProduct}
       />
+      <Footer />
     </main>
   );
 }

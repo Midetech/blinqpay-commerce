@@ -13,6 +13,7 @@ import {
   selectCartItems,
   selectTotalPrice,
 } from "../redux/cart/cartSlice";
+import Footer from "components/Footer";
 export default function Cart() {
   const items = useSelector((state: RootState) => selectCartItems(state));
   const totalPrice = useSelector((state: RootState) => selectTotalPrice(state));
@@ -42,7 +43,7 @@ export default function Cart() {
   };
   const initializePayment = usePaystackPayment(config);
   return (
-    <main className="flex lg:min-h-screen md:min-h-screen h-[90vh] flex-col pb-12">
+    <main className="flex lg:min-h-screen md:min-h-screen flex-col">
       <Header />
       <p className="px-8 py-4 text-2xl font-sans font-semibold">
         Shopping Cart
@@ -92,6 +93,7 @@ export default function Cart() {
           </div>
         </div>
       )}
+      <Footer />
     </main>
   );
 }
