@@ -1,6 +1,6 @@
 # Blinq Shop
 
-Blinqshop is an E-commerce platforms that simulate shopping experience on the web.
+Blinqshop is an E-commerce platform that simulates shopping experience on the web. The functionalities include products display, cart features, checkout feature using paystack for handling payment.
 
 Demo URL [https://blinqpay-commerce.vercel.app/](https://blinqpay-commerce.vercel.app/)
 
@@ -46,5 +46,5 @@ Technologies:
 - tanstackQuery
 - Axios for http requests
 - Paystack for payment gateway integration
-- DummyJSON for products [https://dummyjson.com/](https://dummyjson.com/)
+- DummyJSON for products  https://dummyjson.com/
 ```
