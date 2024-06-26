@@ -13,7 +13,7 @@ const Header = ({ handleSearch, isSearchEnable = false }: HeaderProps) => {
 
   const router = useRouter();
   return (
-    <div className="h-[80px] w-full border border-b flex items-center justify-between px-8 sticky top-0 bg-white overflow-hidden">
+    <div className="h-[80px] w-full border border-b flex items-center justify-between px-8 sticky top-0 bg-white overflow-hidden z-50 shadow-md">
       <div onClick={() => router.push("/")}>
         <Image
           src="/blinqshop.png"
