@@ -20,7 +20,6 @@
     "next": "14.2.4",
     "primeicons": "^7.0.0",
     "primereact": "^10.6.6",
-    "quill": "^2.0.2",
     "react": "^18",
     "react-dom": "^18",
     "react-paystack": "^5.0.0"
