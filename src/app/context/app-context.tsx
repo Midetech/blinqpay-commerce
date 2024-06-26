@@ -4,15 +4,12 @@ import React, {
   useReducer,
   useEffect,
   ReactNode,
+  useState,
 } from "react";
+import { Product } from "../../interfaces/interface";
 
 // Define item and cart state types
-interface CartItem {
-  id: number;
-  title: string;
-  image: string;
-  price: number;
-  description: string;
+interface CartItem extends Product {
   quantity: number;
 }
 
@@ -42,6 +39,8 @@ const CartContext = createContext<{
   removeFromCart: (id: number) => void;
   getTotalPrice: () => number;
   quantities: number;
+  product: Product;
+  setProduct: (product: Product) => void;
 }>({
   state: initialState,
   addToCart: () => {},
@@ -50,6 +49,8 @@ const CartContext = createContext<{
   removeFromCart: () => {},
   getTotalPrice: () => 0,
   quantities: 0,
+  product: {} as any,
+  setProduct: () => {},
 });
 
 // Reducer function to handle cart actions
@@ -113,6 +114,7 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 // Provider component
 const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
+  const [product, setProduct] = useState<Product>({} as any);
 
   // Load cart from local storage on initialization
   useEffect(() => {
@@ -157,6 +159,8 @@ const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       value={{
         state,
         quantities,
+        product,
+        setProduct,
         addToCart,
         increaseQuantity,
         decreaseQuantity,

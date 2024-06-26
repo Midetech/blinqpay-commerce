@@ -2,7 +2,9 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
-import { CartProvider } from "./app-context";
+
+import { PrimeReactProvider } from "primereact/api";
+import { CartProvider } from "./context/app-context";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = React.useState(() => new QueryClient());
@@ -10,9 +12,11 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <>
       <CartProvider>
-        <QueryClientProvider client={queryClient}>
-          {children}
-        </QueryClientProvider>
+        <PrimeReactProvider>
+          <QueryClientProvider client={queryClient}>
+            {children}
+          </QueryClientProvider>
+        </PrimeReactProvider>
       </CartProvider>
     </>
   );

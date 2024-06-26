@@ -1,46 +1,63 @@
 /* eslint-disable @next/next/no-img-element */
-import Image from "next/image";
-import React from "react";
 import _ from "lodash";
+import { useRouter } from "next/navigation";
+import { Rating } from "primereact/rating";
+import { Product } from "../interfaces/interface";
 import Button from "./Button";
-import { useCart } from "../app/app-context";
-
-interface CardProps {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  image: string;
-  quantity?: number;
-}
-const Card = (item: CardProps) => {
+import Image from "next/image";
+import { useCart } from "../app/context/app-context";
+import { Toast } from "primereact/toast";
+import { useRef } from "react";
+const Card = (item: Product) => {
+  const toast = useRef<Toast>(null);
   const {
     state,
     increaseQuantity,
     decreaseQuantity,
     removeFromCart,
     addToCart,
+    setProduct,
   } = useCart();
-  const existingItem = state.items.find((cart) => cart.id === item.id);
+  const existingItem = state.items.find((cart: any) => cart.id === item.id);
+  const router = useRouter();
   return (
-    <div className="xl:w-[24%] lg:w-[23%] md:w-[32%] w-[90%] border p-4 rounded-[8px] space-y-2 shadow-sm">
+    <div
+      onClick={() => {
+        setProduct(item);
+        router.push("?modal=true");
+      }}
+      className="xl:w-[24%] lg:w-[23%] md:w-[32%] w-[90%] border p-4 rounded-[8px] space-y-2 shadow-sm"
+    >
+      <Toast ref={toast} />
       <div className="h-44">
-        <img
-          src={item.image}
+        <Image
+          priority
+          height={100}
+          width={100}
+          src={item.images[0]}
           alt={item.title}
-          className="object-contain h-full w-full shrink-0"
+          className="object-contain w-full h-full shrink-0"
         />
       </div>
-      <h1 className="text-lg font-bold">
+
+      <h1 className="text-lg font-bold text-gray-700">
         {_.truncate(item.title, {
-          length: 30,
+          length: 25,
         })}
       </h1>
-      <p className="text-sm">
+
+      <p className="text-sm text-gray-600">
         {_.truncate(item.description, {
           length: 100,
         })}
       </p>
+
+      <Rating
+        className="text-primary"
+        value={item.rating}
+        disabled
+        cancel={false}
+      />
       <div className="flex justify-between items-center">
         <p className="text-sm font-bold text-center">${item.price}</p>
 
@@ -48,14 +65,20 @@ const Card = (item: CardProps) => {
           {existingItem?.id === item.id && (
             <div className="flex items-center gap-x-2">
               <Button
-                onClick={() => decreaseQuantity(item.id)}
+                onClick={(e: { stopPropagation: () => void }) => {
+                  e.stopPropagation();
+                  decreaseQuantity(item.id);
+                }}
                 className="!bg-primary text-white !w-4 !h-4 !rounded-[3px] text-[10px]"
               >
                 <i className=" pi pi-minus "></i>
               </Button>
-              <p>{existingItem.quantity}</p>
+              <p>{existingItem?.quantity}</p>
               <Button
-                onClick={() => increaseQuantity(item.id)}
+                onClick={(e: { stopPropagation: () => void }) => {
+                  e.stopPropagation();
+                  increaseQuantity(item.id);
+                }}
                 className="!bg-primary text-white !w-4 !h-4  !rounded-[3px]  text-[10px]"
               >
                 <i className=" pi pi-plus"></i>
@@ -65,26 +88,42 @@ const Card = (item: CardProps) => {
 
           {existingItem?.id === item.id ? (
             <Button
-              onClick={() => removeFromCart(item.id)}
+              onClick={(e: { stopPropagation: () => void }) => {
+                e.stopPropagation();
+                removeFromCart(item.id);
+                toast.current?.show({
+                  severity: "info",
+                  summary: "Cart updated",
+                  detail: `${item.title} removed from cart`,
+                  life: 3000,
+                });
+              }}
               className="!w-8 !bg-transparent text-red-600"
             >
               <i className="pi pi-trash"></i>
             </Button>
           ) : (
             <Button
-              className="hover:border-[#7765C4] hover:text-[#7765C4] border shadow-sm"
-              onClick={() =>
+              className="bg-[#7765C4] text-white shadow-sm"
+              onClick={(e: { stopPropagation: () => void }) => {
+                e.stopPropagation();
                 addToCart({
                   ...item,
                   quantity: 1,
-                })
-              }
+                });
+                toast.current?.show({
+                  severity: "success",
+                  summary: "Cart updated",
+                  detail: `${item.title} added to cart`,
+                  life: 3000,
+                });
+              }}
             >
-              Add
               <i
                 className="pi
-  pi-plus-circle"
+          pi-shopping-cart"
               ></i>
+              Add to cart
             </Button>
           )}
         </div>

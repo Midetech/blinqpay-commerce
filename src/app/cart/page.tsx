@@ -3,9 +3,9 @@ import Button from "components/Button";
 import CartCard from "components/CartCard";
 import Header from "components/Header";
 import { useRouter } from "next/navigation";
-import { useCart } from "../app-context";
 import { usePaystackPayment } from "react-paystack";
-
+import { useCart } from "../context/app-context";
+import { Key } from "react";
 export default function Cart() {
   const { state, quantities, getTotalPrice } = useCart();
   const router = useRouter();
@@ -50,8 +50,8 @@ export default function Cart() {
       {state.items.length > 0 && (
         <div className="px-8 py-4 flex lg:gap-x-4 flex-col lg:flex-row gap-y-8">
           <div className="lg:w-[73%] flex flex-col gap-y-4 border rounded-[7px]">
-            {state.items.map((item) => (
-              <CartCard {...item} key={item.id} />
+            {state.items.map((product, index: Key | null | undefined) => (
+              <CartCard {...product} key={index} />
             ))}
           </div>
 

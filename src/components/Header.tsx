@@ -2,8 +2,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { useCart } from "../app/app-context";
-import Button from "./Button";
+import { useCart } from "../app/context/app-context";
 
 interface HeaderProps {
   isSearchEnable?: boolean;
@@ -18,20 +17,22 @@ const Header = ({ handleSearch, isSearchEnable = false }: HeaderProps) => {
       <div onClick={() => router.push("/")}>
         <Image
           src="/blinqshop.png"
-          width={80}
+          width={100}
           height={100}
           alt="Bliq Shop"
           priority
+          className="w-[80px]"
         />
       </div>
 
       {isSearchEnable && (
-        <div className="h-[40px] w-2/5 rounded-[8px] border">
+        <div className="h-[40px] w-2/5 rounded-[8px] border-[0.5px] flex items-center pl-2">
+          <i className="pi pi-search"> </i>
           <input
             onChange={handleSearch}
             type="text"
             placeholder="Search"
-            className="w-full h-[38px] p-2 outline-none bg-transparent"
+            className="w-full h-[38px] p-2 outline-none  bg-transparent"
           />
         </div>
       )}
