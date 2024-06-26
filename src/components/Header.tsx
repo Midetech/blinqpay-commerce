@@ -40,10 +40,7 @@ const Header = ({ handleSearch, isSearchEnable = false }: HeaderProps) => {
         <div className="border w-7 h-7 text-[#7765C4] rounded-full flex items-center justify-center border-[#7765C4] cursor-pointer">
           <i className="pi pi-user"></i>
         </div>
-        <div
-          onClick={() => router.push("/cart")}
-          className="text-[#7765C4] pr-4"
-        >
+        <div onClick={() => router.push("/cart")} className="text-[#7765C4]">
           <i
             className="pi pi-shopping-cart text-2xl lg:text-2xl p-overlay-badge relative cursor-pointer
 "

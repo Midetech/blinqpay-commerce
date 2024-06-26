@@ -26,7 +26,7 @@ export default function RootLayout({
       <Providers>
         <body className={` ${inter.className}`}>
           {children}
-          <footer className="fixed bottom-0 h-12 w-full  px-8 flex items-center justify-between bg-gray-200">
+          <footer className="h-12 w-full  px-8 flex items-center justify-between border-t">
             <Image src={"/logo.png"} alt="Blinq Shop" width={30} height={20} />
 
             <p>Copyright &copy; {new Date().getFullYear()}</p>

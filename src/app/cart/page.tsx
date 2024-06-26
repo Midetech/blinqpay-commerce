@@ -1,14 +1,35 @@
 "use client";
 import Button from "components/Button";
-import Header from "components/Header";
-import { useCart } from "../app-context";
-import { useEffect } from "react";
 import CartCard from "components/CartCard";
+import Header from "components/Header";
 import { useRouter } from "next/navigation";
+import { useCart } from "../app-context";
+import { usePaystackPayment } from "react-paystack";
 
 export default function Cart() {
   const { state, quantities, getTotalPrice } = useCart();
   const router = useRouter();
+  const config = {
+    reference: new Date().getTime().toString(),
+    email: "user@example.com",
+    amount: getTotalPrice() * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+    publicKey: `${process.env.NEXT_PUBLIC_PAYSTACK_KEY}`,
+  };
+
+  // you can call this function anything
+  const onSuccess = (reference: any) => {
+    // Implementation for whatever you want to do with reference and after success call.
+    localStorage.clear();
+    router.push("/");
+    console.log(reference);
+  };
+
+  // you can call this function anything
+  const onClose = (err: any) => {
+    // implementation for  whatever you want to do when the Paystack dialog closed.
+    console.log("closed");
+  };
+  const initializePayment = usePaystackPayment(config);
   return (
     <main className="flex lg:min-h-screen flex-col pb-12">
       <Header />
@@ -48,7 +69,12 @@ export default function Cart() {
 
               <p>Delivery not include</p>
 
-              <Button className="!bg-primary text-white border-none">
+              <Button
+                onClick={() => {
+                  initializePayment(onSuccess, onClose);
+                }}
+                className="!bg-primary text-white border-none"
+              >
                 Checkout
               </Button>
             </div>
