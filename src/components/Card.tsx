@@ -49,9 +49,15 @@ const Card = ({
         />
       </div>
 
-      <p className="lg:text-lg text-sm lg:font-bold text-gray-700">
+      <p className="lg:text-lg hidden lg:block lg:font-bold text-gray-700">
         {_.truncate(item.title, {
           length: 25,
+        })}
+      </p>
+
+      <p className="lg:hidden block text-sm lg:font-bold text-gray-700">
+        {_.truncate(item.title, {
+          length: 15,
         })}
       </p>
 
