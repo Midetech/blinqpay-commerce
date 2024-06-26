@@ -3,7 +3,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="h-12 w-full  px-8 flex items-center justify-between border-t fixed bottom-0 bg-white shadow-sm">
+    <footer className="h-12 w-full  px-8 flex items-center justify-between  fixed bottom-0 bg-white shadow-md">
       <Image
         src={"/blinqshop.png"}
         alt="Blinq Shop"

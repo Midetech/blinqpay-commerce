@@ -20,10 +20,10 @@ interface CartItem extends Product {
 }
 const Card = ({
   item,
-  setSelectedProduct
+  setSelectedProduct,
 }: {
-  item:Product,
-  setSelectedProduct:(item:Product)=>void
+  item: Product;
+  setSelectedProduct: (item: Product) => void;
 }) => {
   const toast = useRef<Toast>(null);
   const dispatch = useDispatch();
@@ -33,9 +33,12 @@ const Card = ({
   const items = useSelector((state: RootState) => selectCartItems(state));
   const existingItem = items.find((cart: any) => cart.id === item.id);
   return (
-    <div className="xl:w-[24%] lg:w-[23%] md:w-[32%] w-[90%] border p-4 rounded-[8px] space-y-2 shadow-sm cursor-pointer" onClick={()=>setSelectedProduct(item)}>
+    <div
+      className="xl:w-[24%] lg:w-[23%] md:w-[32%] w-[45%] border p-4 rounded-[8px] space-y-2 shadow-sm cursor-pointer overflow-hidden"
+      onClick={() => setSelectedProduct(item)}
+    >
       <Toast ref={toast} />
-      <div className="h-44">
+      <div className="lg:h-44 h-20">
         <Image
           priority
           height={100}
@@ -46,26 +49,27 @@ const Card = ({
         />
       </div>
 
-      <h1 className="text-lg font-bold text-gray-700">
+      <p className="lg:text-lg text-sm lg:font-bold text-gray-700">
         {_.truncate(item.title, {
           length: 25,
         })}
-      </h1>
+      </p>
 
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-gray-600 hidden lg:block">
         {_.truncate(item.description, {
           length: 100,
         })}
       </p>
 
       <Rating
-        className="text-primary"
+        className="text-primary text-sm"
+        size={2}
         value={item.rating}
         disabled
         cancel={false}
       />
-      <div className="flex justify-between items-center">
-        <p className="text-sm font-bold text-center">${item.price}</p>
+      <div className="flex justify-between flex-col lg:flex-row  lg:items-center">
+        <p className="text-sm font-bold lg:text-center">${item.price}</p>
 
         <div className="flex justify-between items-center gap-x-6 mt-4">
           {existingItem?.id === item.id && (
