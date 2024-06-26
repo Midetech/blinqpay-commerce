@@ -73,13 +73,13 @@ const Card = ({
 
         <div className="flex justify-between items-center gap-x-6 mt-4">
           {existingItem?.id === item.id && (
-            <div className="flex items-center gap-x-2">
+            <div className="flex items-center gap-x-2 h-[42px]">
               <Button
                 onClick={(e: { stopPropagation: () => void }) => {
                   e.stopPropagation();
                   dispatch(decreaseQuantity(item.id));
                 }}
-                className="!bg-primary text-white !w-4 !h-4 !rounded-[3px] text-[10px]"
+                className="!bg-primary text-white !w-4 !h-4  !rounded-[3px] text-[10px]"
               >
                 <i className=" pi pi-minus "></i>
               </Button>
@@ -108,7 +108,7 @@ const Card = ({
                   life: 3000,
                 });
               }}
-              className="!w-8 !bg-transparent text-red-600"
+              className="!w-8 !h-6  !bg-transparent text-red-600"
             >
               <i className="pi pi-trash"></i>
             </Button>
