@@ -71,7 +71,7 @@ export default function Cart() {
 
               <Button
                 onClick={() => {
-                  initializePayment(onSuccess, onClose);
+                  initializePayment({ onSuccess, onClose });
                 }}
                 className="!bg-primary text-white border-none"
               >
