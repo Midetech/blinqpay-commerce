@@ -82,7 +82,7 @@ export default function Home() {
             <p>Filter</p>
           </div>
         </div>
-        {productQuery.isPending && (
+        {!productQuery.isPending && (
           <div className="flex flex-wrap gap-4">
             {[...Array(10)].map((item, index) => (
               <SkeletonLoader key={index} />
@@ -90,7 +90,7 @@ export default function Home() {
           </div>
         )}
         {productQuery.isFetched && (
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
             {products.map((item) => (
               <Card key={item.id} {...item} />
             ))}
