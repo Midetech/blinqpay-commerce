@@ -43,6 +43,7 @@ Technologies:
 - TailwindCSS
 - Primereact for Icons and some out of the box component
 - Typescript
+- Redux Toolkit for state management
 - tanstackQuery
 - Axios for http requests
 - Paystack for payment gateway integration

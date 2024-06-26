@@ -6,13 +6,23 @@ import { useRouter } from "next/navigation";
 import { usePaystackPayment } from "react-paystack";
 import { useCart } from "../context/app-context";
 import { Key } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import {
+  quantities,
+  selectCartItems,
+  selectTotalPrice,
+} from "../redux/cart/cartSlice";
 export default function Cart() {
-  const { state, quantities, getTotalPrice, clearCart } = useCart();
+  const items = useSelector((state: RootState) => selectCartItems(state));
+  const totalPrice = useSelector((state: RootState) => selectTotalPrice(state));
+  const totalItems = useSelector((state: RootState) => quantities(state));
+  console.log(totalItems);
   const router = useRouter();
   const config = {
     reference: new Date().getTime().toString(),
     email: "user@example.com",
-    amount: getTotalPrice() * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+    amount: totalPrice * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
     publicKey: `${process.env.NEXT_PUBLIC_PAYSTACK_KEY}`,
   };
 
@@ -20,7 +30,7 @@ export default function Cart() {
   const onSuccess = (reference: any) => {
     // Implementation for whatever you want to do with reference and after success call.
     localStorage.clear();
-    clearCart();
+    // clearCart();
     router.push("/");
     console.log(reference);
   };
@@ -32,12 +42,12 @@ export default function Cart() {
   };
   const initializePayment = usePaystackPayment(config);
   return (
-    <main className="flex lg:min-h-screen flex-col pb-12">
+    <main className="flex lg:min-h-screen md:min-h-screen h-[90vh] flex-col pb-12">
       <Header />
       <p className="px-8 py-4 text-2xl font-sans font-semibold">
         Shopping Cart
       </p>
-      {state.items.length === 0 && (
+      {items.length === 0 && (
         <div className="w-full flex flex-col justify-center items-center mt-44 gap-y-3">
           <p className="text-2xl font-semibold">Cart is Empty</p>
           <Button
@@ -48,10 +58,10 @@ export default function Cart() {
           </Button>
         </div>
       )}
-      {state.items.length > 0 && (
+      {items.length > 0 && (
         <div className="px-8 py-4 flex lg:gap-x-4 flex-col lg:flex-row gap-y-8">
           <div className="lg:w-[73%] flex flex-col gap-y-4 border rounded-[7px]">
-            {state.items.map((product, index: Key | null | undefined) => (
+            {items.map((product, index: Key | null | undefined) => (
               <CartCard {...product} key={index} />
             ))}
           </div>
@@ -65,7 +75,7 @@ export default function Cart() {
               <p>Subtotal</p>
               <div className="flex items-center justify-between">
                 {" "}
-                <p>{`Items (${quantities})`}</p> <p>{`$${getTotalPrice()}`}</p>
+                <p>{`Items (${totalItems})`}</p> <p>{`$${totalPrice}`}</p>
               </div>
 
               <p>Delivery not include</p>

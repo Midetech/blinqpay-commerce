@@ -14,6 +14,7 @@ import { useCart } from "./context/app-context";
 export default function Home() {
   const { product } = useCart();
   const [products, setProducts] = React.useState<Product[]>([]);
+  const [selectedProduct, setSelectedProduct] = React.useState<any>({} as any);
   const [apiResponse, setApiResponse] = React.useState<ResponseProps>(
     {} as any
   );
@@ -168,7 +169,11 @@ export default function Home() {
         {products?.length > 0 && (
           <div className="flex flex-wrap gap-4 justify-center lg:justify-start md:justify-start">
             {products?.map((item, index) => (
-              <Card key={index} {...item} />
+              <Card
+                key={index}
+                item={item}
+                setSelectedProduct={setSelectedProduct}
+              />
             ))}
           </div>
         )}
@@ -188,7 +193,10 @@ export default function Home() {
           Load More
         </Button>
       )}
-      <Modal {...product} />
+      <Modal
+        product={selectedProduct}
+        setSelectedProduct={setSelectedProduct}
+      />
     </main>
   );
 }

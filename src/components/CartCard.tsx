@@ -1,20 +1,23 @@
 /* eslint-disable @next/next/no-img-element */
 
-import _ from "lodash";
-import Button from "./Button";
 import Image from "next/image";
-import { Product } from "../interfaces/interface";
-import React from "react";
 import { Rating } from "primereact/rating";
-import { useCart } from "../app/context/app-context";
+import React from "react";
+import { useDispatch } from "react-redux";
+import {
+  decreaseQuantity,
+  increaseQuantity,
+  removeFromCart,
+} from "../app/redux/cart/cartSlice";
+import { Product } from "../interfaces/interface";
+import Button from "./Button";
 interface Cartproduct extends Product {
   quantity: number;
 }
 
 const CartCard = (product: Cartproduct) => {
   const [activeImage, setActiveImage] = React.useState(product.images[0]);
-
-  const { increaseQuantity, decreaseQuantity, removeFromCart } = useCart();
+  const dispatch = useDispatch();
   return (
     <div className="w-full border-b flex flex-col py-4 gap-x-6">
       <div className="w-full flex p-4 gap-x-6">
@@ -55,7 +58,7 @@ const CartCard = (product: Cartproduct) => {
               <Button
                 onClick={(e: { stopPropagation: () => void }) => {
                   e.stopPropagation();
-                  decreaseQuantity(product.id);
+                  dispatch(decreaseQuantity({ id: product.id }));
                 }}
                 className="!bg-primary text-white !w-4 !h-4 !rounded-[3px] text-[10px]"
               >
@@ -65,7 +68,7 @@ const CartCard = (product: Cartproduct) => {
               <Button
                 onClick={(e: { stopPropagation: () => void }) => {
                   e.stopPropagation();
-                  increaseQuantity(product.id);
+                  dispatch(increaseQuantity({ id: product.id }));
                 }}
                 className="!bg-primary text-white !w-4 !h-4  !rounded-[3px]  text-[10px]"
               >
@@ -74,7 +77,7 @@ const CartCard = (product: Cartproduct) => {
             </div>
 
             <Button
-              onClick={() => removeFromCart(product.id)}
+              onClick={() => dispatch(removeFromCart({ id: product.id }))}
               className="!w-28 !bg-red-600 !text-white"
             >
               <i className="pi pi-trash"></i>Remove

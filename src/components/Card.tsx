@@ -1,32 +1,39 @@
 /* eslint-disable @next/next/no-img-element */
 import _ from "lodash";
-import { useRouter } from "next/navigation";
-import { Rating } from "primereact/rating";
-import { Product } from "../interfaces/interface";
-import Button from "./Button";
 import Image from "next/image";
-import { useCart } from "../app/context/app-context";
+import { Rating } from "primereact/rating";
 import { Toast } from "primereact/toast";
 import { useRef } from "react";
-const Card = (item: Product) => {
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToCart,
+  decreaseQuantity,
+  increaseQuantity,
+  removeFromCart,
+  selectCartItems,
+} from "../app/redux/cart/cartSlice";
+import { RootState } from "../app/redux/store";
+import { Product } from "../interfaces/interface";
+import Button from "./Button";
+interface CartItem extends Product {
+  quantity: number;
+}
+const Card = ({
+  item,
+  setSelectedProduct
+}: {
+  item:Product,
+  setSelectedProduct:(item:Product)=>void
+}) => {
   const toast = useRef<Toast>(null);
-  const {
-    state,
-    increaseQuantity,
-    decreaseQuantity,
-    removeFromCart,
-    addToCart,
-    setProduct,
-  } = useCart();
-  const existingItem = state.items.find((cart: any) => cart.id === item.id);
-  const router = useRouter();
+  const dispatch = useDispatch();
+  const handleAddToCart = (product: CartItem) => {
+    dispatch(addToCart(product));
+  };
+  const items = useSelector((state: RootState) => selectCartItems(state));
+  const existingItem = items.find((cart: any) => cart.id === item.id);
   return (
-    <div
-      onClick={() => {
-        setProduct(item);
-      }}
-      className="xl:w-[24%] lg:w-[23%] md:w-[32%] w-[90%] border p-4 rounded-[8px] space-y-2 shadow-sm cursor-pointer"
-    >
+    <div className="xl:w-[24%] lg:w-[23%] md:w-[32%] w-[90%] border p-4 rounded-[8px] space-y-2 shadow-sm cursor-pointer" onClick={()=>setSelectedProduct(item)}>
       <Toast ref={toast} />
       <div className="h-44">
         <Image
@@ -66,7 +73,7 @@ const Card = (item: Product) => {
               <Button
                 onClick={(e: { stopPropagation: () => void }) => {
                   e.stopPropagation();
-                  decreaseQuantity(item.id);
+                  dispatch(decreaseQuantity(item.id));
                 }}
                 className="!bg-primary text-white !w-4 !h-4 !rounded-[3px] text-[10px]"
               >
@@ -76,7 +83,7 @@ const Card = (item: Product) => {
               <Button
                 onClick={(e: { stopPropagation: () => void }) => {
                   e.stopPropagation();
-                  increaseQuantity(item.id);
+                  dispatch(increaseQuantity({ id: item.id }));
                 }}
                 className="!bg-primary text-white !w-4 !h-4  !rounded-[3px]  text-[10px]"
               >
@@ -89,7 +96,7 @@ const Card = (item: Product) => {
             <Button
               onClick={(e: { stopPropagation: () => void }) => {
                 e.stopPropagation();
-                removeFromCart(item.id);
+                dispatch(removeFromCart({ id: item.id }));
                 toast.current?.show({
                   severity: "info",
                   summary: "Cart updated",
@@ -106,7 +113,7 @@ const Card = (item: Product) => {
               className="bg-[#7765C4] text-white shadow-sm"
               onClick={(e: { stopPropagation: () => void }) => {
                 e.stopPropagation();
-                addToCart({
+                handleAddToCart({
                   ...item,
                   quantity: 1,
                 });

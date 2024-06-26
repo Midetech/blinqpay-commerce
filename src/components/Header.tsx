@@ -2,15 +2,16 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { useCart } from "../app/context/app-context";
+import { useSelector } from "react-redux";
+import { quantities } from "../app/redux/cart/cartSlice";
+import { RootState } from "../app/redux/store";
 
 interface HeaderProps {
   isSearchEnable?: boolean;
   handleSearch?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 const Header = ({ handleSearch, isSearchEnable = false }: HeaderProps) => {
-  const { quantities } = useCart();
-
+  const totalItems = useSelector((state: RootState) => quantities(state));
   const router = useRouter();
   return (
     <div className="h-[80px] w-full border border-b flex items-center justify-between px-8 sticky top-0 bg-white overflow-hidden z-50 shadow-md">
@@ -46,9 +47,9 @@ const Header = ({ handleSearch, isSearchEnable = false }: HeaderProps) => {
             className="pi pi-shopping-cart text-2xl lg:text-2xl p-overlay-badge relative cursor-pointer
 "
           >
-            {quantities > 0 && (
+            {totalItems > 0 && (
               <div className="w-3 h-3 text-[9px] font-sans font-bold flex items-center justify-center rounded-full text-white  bg-[#7765C4] absolute -top-1 -right-2">
-                {quantities}
+                {totalItems}
               </div>
             )}
           </i>

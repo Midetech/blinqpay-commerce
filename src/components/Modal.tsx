@@ -1,30 +1,37 @@
 "use client";
-import { useSearchParams, usePathname } from "next/navigation";
-import Link from "next/link";
-import Button from "./Button";
-import { Product } from "../interfaces/interface";
 import Image from "next/image";
 import { Rating } from "primereact/rating";
 import React from "react";
 import { useCart } from "../app/context/app-context";
+import { Product } from "../interfaces/interface";
+import Button from "./Button";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../app/redux/store";
+import {
+  addToCart,
+  decreaseQuantity,
+  increaseQuantity,
+  removeFromCart,
+  selectCartItems,
+} from "../app/redux/cart/cartSlice";
 
-function Modal(product: Product) {
-  const {
-    state,
-    addToCart,
-    removeFromCart,
-    increaseQuantity,
-    decreaseQuantity,
-    setProduct,
-  } = useCart();
-  const existingItem = state.items.find((cart: any) => cart.id === product?.id);
+function Modal({
+  product,
+  setSelectedProduct,
+}: {
+  product: Product;
+  setSelectedProduct: (item: Product) => void;
+}) {
+  const items = useSelector((state: RootState) => selectCartItems(state));
+  const existingItem = items.find((cart: any) => cart.id === product?.id);
+  const dispatch = useDispatch();
   const [activeImage, setActiveImage] = React.useState("");
 
   React.useEffect(() => {
-    if (product.id) {
+    if (product?.id) {
       setActiveImage(product.images[0]);
     }
-  }, [product.id, product.images]);
+  }, [product?.id, product?.images]);
 
   return (
     <>
@@ -35,7 +42,10 @@ function Modal(product: Product) {
               <div className="flex items-center justify-between border-b pb-2">
                 <p className="font-bold text-base">Product Details</p>
 
-                <Button className="w-6" onClick={() => setProduct({} as any)}>
+                <Button
+                  className="w-6"
+                  onClick={() => setSelectedProduct({} as any)}
+                >
                   <i
                     className="pi 
 pi-times-circle"
@@ -92,7 +102,7 @@ pi-times-circle"
                           <Button
                             onClick={(e: { stopPropagation: () => void }) => {
                               e.stopPropagation();
-                              decreaseQuantity(product.id);
+                              dispatch(decreaseQuantity({ id: product.id }));
                             }}
                             className="!bg-primary text-white !w-4 !h-4 !rounded-[3px] text-[10px]"
                           >
@@ -102,7 +112,7 @@ pi-times-circle"
                           <Button
                             onClick={(e: { stopPropagation: () => void }) => {
                               e.stopPropagation();
-                              increaseQuantity(product.id);
+                              dispatch(increaseQuantity({ id: product.id }));
                             }}
                             className="!bg-primary text-white !w-4 !h-4  !rounded-[3px]  text-[10px]"
                           >
@@ -115,7 +125,7 @@ pi-times-circle"
                         <Button
                           onClick={(e: { stopPropagation: () => void }) => {
                             e.stopPropagation();
-                            removeFromCart(product.id);
+                            dispatch(removeFromCart({ id: product.id }));
                           }}
                           className="!w-20 !bg-transparent text-red-600"
                         >
@@ -126,10 +136,12 @@ pi-times-circle"
                           className="bg-[#7765C4] text-white shadow-sm ml-auto"
                           onClick={(e: { stopPropagation: () => void }) => {
                             e.stopPropagation();
-                            addToCart({
-                              ...product,
-                              quantity: 1,
-                            });
+                            dispatch(
+                              addToCart({
+                                ...product,
+                                quantity: 1,
+                              })
+                            );
                           }}
                         >
                           <i

@@ -25,8 +25,8 @@ export default function RootLayout({
     <html lang="en">
       <link rel="icon" href="/favicon.ico" sizes="any" />
 
-      <Providers>
-        <body className={` ${inter.className}`}>
+      <body className={` ${inter.className}`}>
+        <Providers>
           {children}
           <footer className="h-12 w-full  px-8 flex items-center justify-between border-t">
             <Image
@@ -41,8 +41,8 @@ export default function RootLayout({
               Copyright &copy; {new Date().getFullYear()}
             </p>
           </footer>
-        </body>
-      </Providers>
+        </Providers>
+      </body>
     </html>
   );
 }
