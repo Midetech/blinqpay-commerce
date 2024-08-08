@@ -7,13 +7,15 @@ import Modal from "components/Modal";
 import SkeletonLoader from "components/SkeletonLoader";
 import { Dropdown } from "primereact/dropdown";
 import { Skeleton } from "primereact/skeleton";
-import React from "react";
+import React, { useRef } from "react";
 import { getMethod } from "services/request-methods";
 import { Categories, Product, ResponseProps } from "../interfaces/interface";
 import { useCart } from "./context/app-context";
 import Footer from "components/Footer";
+import { Toast } from "primereact/toast";
 
 export default function Home() {
+  const toast = useRef<Toast>(null);
   const { product } = useCart();
   const [products, setProducts] = React.useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = React.useState<any>({} as any);
@@ -80,6 +82,7 @@ export default function Home() {
 
   return (
     <main className="flex lg:min-h-screen flex-col">
+      <Toast ref={toast} />
       <Header
         handleSearch={(e) => {
           if (e.target.value) {
@@ -180,6 +183,7 @@ export default function Home() {
           <div className="flex flex-wrap gap-4 justify-center lg:justify-start md:justify-start">
             {products?.map((item, index) => (
               <Card
+                toast={toast}
                 key={index}
                 item={item}
                 setSelectedProduct={setSelectedProduct}

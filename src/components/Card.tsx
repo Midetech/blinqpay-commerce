@@ -21,11 +21,12 @@ interface CartItem extends Product {
 const Card = ({
   item,
   setSelectedProduct,
+  toast,
 }: {
   item: Product;
   setSelectedProduct: (item: Product) => void;
+  toast: any;
 }) => {
-  const toast = useRef<Toast>(null);
   const dispatch = useDispatch();
   const handleAddToCart = (product: CartItem) => {
     dispatch(addToCart(product));
@@ -35,9 +36,11 @@ const Card = ({
   return (
     <div
       className="xl:w-[24%] lg:w-[23%] md:w-[32%] w-[45%] border p-4 rounded-[8px] space-y-2 shadow-sm cursor-pointer overflow-hidden"
-      onClick={() => setSelectedProduct(item)}
+      onClick={(e) => {
+        e.stopPropagation();
+        setSelectedProduct(item);
+      }}
     >
-      <Toast ref={toast} />
       <div className="lg:h-44 h-20">
         <Image
           priority
